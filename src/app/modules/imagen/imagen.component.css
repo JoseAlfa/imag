@@ -67,7 +67,7 @@
 }
 /**Para agular material**/
 .example-list {
-  width: 1000px;
+  width: auto;
   max-width: 100%;
   border: solid 1px #ccc;
   min-height: 60px;
@@ -75,7 +75,9 @@
   flex-direction: row;
   background: white;
   border-radius: 4px;
-  overflow: hidden;
+  overflow: auto;
+  padding-bottom: 5px;
+  padding-top: 5px;
 }
 
 .example-box {
@@ -116,4 +118,32 @@
 
 .example-list.cdk-drop-list-dragging .example-box:not(.cdk-drag-placeholder) {
   transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+html, body, div {
+  height:100%;
+  width:100%;
+  margin:0;
+  padding:0;
+}
+div {
+  height:200%;
+}
+::-webkit-scrollbar {
+  -webkit-appearance: none;
+}
+::-webkit-scrollbar:vertical {
+  width: 12px;
+}
+::-webkit-scrollbar:horizontal {
+  height: 12px;
+}
+::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, .5);
+  border-radius: 10px;
+  border: 2px solid #ffffff;
+}
+::-webkit-scrollbar-track {
+  border-radius: 10px;
+  background-color: #ffffff;
 }

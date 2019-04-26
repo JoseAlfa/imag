@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
+import {CdkDragDrop, moveItemInArray, CdkDragEnter, CdkDragSortEvent} from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-imagen',
@@ -17,7 +17,10 @@ export class ImagenComponent implements OnInit {
     'mas',
     'otro que es mas largo'
   ];
-
+  dropi(e: CdkDragSortEvent){
+    console.log(e);
+    console.log(798798797898)
+  }
   drop(event: CdkDragDrop<string[]>) {
     console.log(event)
     moveItemInArray(this.timePeriods, event.previousIndex, event.currentIndex);

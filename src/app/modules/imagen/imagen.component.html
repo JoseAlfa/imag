@@ -22,8 +22,8 @@
 <br>
 <h2>Angular Material</h2>
 <div class="container">
-  <div cdkDropList cdkDropListOrientation="horizontal" class="example-list" (cdkDropListDropped)="drop($event)">
-    <div class="example-box" *ngFor="let img of imgs" cdkDrag>
+  <div cdkDropList cdkDropListOrientation="horizontal" class="example-list" (cdkDropListDropped)="drop($event)" (cdkDropListSorted)="dropi($event)">
+    <div class="example-box" *ngFor="let img of imgs" cdkDrag cdkDragBoundary=".container">
       <img src="{{getImg(img)}}" alt="imagen" class="img-responsive prev-img">
     </div>
   </div>
