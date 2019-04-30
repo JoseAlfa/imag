@@ -11,8 +11,8 @@ import { ImagenModule } from './modules/imagen/imagen.module';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
-    ImagenModule
+    ImagenModule,
+    AppRoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -4,10 +4,11 @@
 <div class="container">
   <div class="row" id="columns">
         <div *ngFor="let data of imgs" class="column" draggable="true">
-        <img src="{{data.src}}" alt="imagen" class="img-responsive prev-img" draggable="true">
+        <img src="{{data.src}}" alt="imagen" class="img-responsive" draggable="true" style="height: 100px; width: 100px; border-radius: 5px;
+        padding: 2px;">
         </div>
     <input type="file" (change)="fotoAlmacen($event)" multiple hidden name="fotoSubir" #fotoSubir>
-    <div id="drop_zone" class="col-6 col-sm-6 col-md-4 col-lg-4 col-xl-2 over" (click)="fotoSubir.click()" (drop)="dropHandler($event);" (dragover)="dragOverHandler($event);">
+    <div id="drop_zone" class="col-6 col-sm-6 col-md-4 col-lg-4 col-xl-2 over" (click)="fotoSubir.click()"  (dragover)="dragOverHandler($event);">
       <p>Seleccionar archivo (s)... </p><h3>+</h3>
     </div>
   </div>
@@ -21,10 +22,15 @@
 <br>
 <br>
 <h2>Angular Material</h2>
-<div class="container">
-  <div cdkDropList cdkDropListOrientation="horizontal" class="example-list" (cdkDropListDropped)="drop($event)" (cdkDropListSorted)="dropi($event)">
-    <div class="example-box" *ngFor="let img of imgs" cdkDrag cdkDragBoundary=".container">
-      <img src="{{getImg(img)}}" alt="imagen" class="img-responsive prev-img">
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12">
+        <div cdkDropList cdkDropListOrientation="horizontal" class="example-list" (cdkDropListDropped)="drop($event)" (cdkDropListSorted)="dropi($event)" id="contenedor">
+            <div class="example-box" *ngFor="let img of imgs" cdkDrag >
+              <img src="{{getImg(img)}}" alt="imagen" class="img-responsive prev-img">
+            </div>
+        </div>
     </div>
   </div>
+  
 </div>

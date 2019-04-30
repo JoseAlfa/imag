@@ -17,12 +17,57 @@ export class ImagenComponent implements OnInit {
     'mas',
     'otro que es mas largo'
   ];
+  alto = 0;
+  ancho= 0;
+  numMov = 0;
+  
+  constructor() { }
+
+  ngOnInit() {
+    this.alto=document.getElementById('contenedor').offsetHeight;
+    this.ancho=document.getElementById('contenedor').offsetWidth;
+  }
   dropi(e: CdkDragSortEvent){
-    console.log(e);
-    console.log(798798797898)
+    //previousIndex: 1 anterior
+    //currentIndex: 2 nuevo
+    let wW=window.innerWidth;
+    let num=1;
+    if(wW<1000){
+      num=-1;
+    }
+    if(this.numMov>num){
+      this.ancho=document.getElementById('contenedor').offsetWidth;
+      let elemAncho:any=document.getElementsByClassName('example-box')[0];
+      elemAncho=elemAncho.offsetWidth;
+      let total_elementos_visibles=parseInt((this.ancho/elemAncho).toString());
+      let total_ancho_list = elemAncho*this.imgs.length;
+      if(e.previousIndex==0){
+          document.getElementById('contenedor').scrollLeft += elemAncho;
+          console.log(elemAncho)
+      }else{
+        if(e.previousIndex<e.currentIndex){
+          if(e.currentIndex>0){
+            document.getElementById('contenedor').scrollLeft += elemAncho;
+          }
+        }else{
+          if(e.currentIndex< this.imgs.length){
+            document.getElementById('contenedor').scrollLeft -= elemAncho;
+          }
+        }
+      }
+      /* console.log(total_elementos_visibles);
+      console.log(total_ancho_list) */
+    }else{
+      this.numMov++;
+    }
+  }
+
+  moverScroll(){
+    document.getElementById('contenedor').scrollLeft += 20;
   }
   drop(event: CdkDragDrop<string[]>) {
-    console.log(event)
+    this.numMov=0;
+    //console.log(event)
     moveItemInArray(this.timePeriods, event.previousIndex, event.currentIndex);
     let temp=[];////temporal
     let estaba=event.previousIndex;///index inicial
@@ -99,123 +144,7 @@ export class ImagenComponent implements OnInit {
   }
   imgs:any=[];
   files:any=[];
-  constructor() { }
-
-  ngOnInit() {
-    var dragSrcEl = null;
-
-  function handleDragStart(e) {
-    // Target (this) element is the source node.
-    this.style.opacity = '0.4';
   
-    dragSrcEl = this;
-  
-    e.dataTransfer.effectAllowed = 'move';
-    e.dataTransfer.setData('text/html', this.innerHTML);
-  }
-    
-    function handleDragOver(e) {
-      if (e.preventDefault) {
-        e.preventDefault(); // Necessary. Allows us to drop.
-      }
-    
-      e.dataTransfer.dropEffect = 'move';  // See the section on the DataTransfer object.
-    
-      return false;
-    }
-    
-    function handleDragEnter(e) {
-      // this / e.target is the current hover target.
-      this.classList.add('over');
-    }
-    
-    function handleDragLeave(e) {
-      this.classList.remove('over');  // this / e.target is previous target element.
-    }
-    
-    function handleDrop(e) {
-      // this/e.target is current target element.
-    
-      if (e.stopPropagation) {
-        e.stopPropagation(); // Stops some browsers from redirecting.
-      }
-    
-      // Don't do anything if dropping the same column we're dragging.
-      if (dragSrcEl != this) {
-        // Set the source column's HTML to the HTML of the columnwe dropped on.
-        dragSrcEl.innerHTML = this.innerHTML;
-        this.innerHTML = e.dataTransfer.getData('text/html');
-      }
-    
-      return false;
-    }
-    
-    function handleDragEnd(e) {
-      // this/e.target is the source node.
-    
-      [].forEach.call(cols, function (col) {
-        col.classList.remove('over');
-        col.style.opacity = '1';
-      });
-    }
-    
-    var cols = document.querySelectorAll('#columns .column');
-    [].forEach.call(cols, function(col) {
-      col.addEventListener('dragstart', handleDragStart, false);
-      col.addEventListener('dragenter', handleDragEnter, false)
-      col.addEventListener('dragover', handleDragOver, false);
-      col.addEventListener('dragleave', handleDragLeave, false);
-      col.addEventListener('drop', handleDrop, false);
-      col.addEventListener('dragend', handleDragEnd, false);
-    });
-  }
-  
-
-
-  dropHandler(ev){
-    console.log('File(s) dropped');
-
-    // Prevent default behavior (Prevent file from being opened)
-    ev.preventDefault();
-
-    if (ev.dataTransfer.items) {
-      // Use DataTransferItemList interface to access the file(s)
-      for (var i = 0; i < ev.dataTransfer.items.length; i++) {
-        // If dropped items aren't files, reject them
-        if (ev.dataTransfer.items[i].kind === 'file') {
-          var file = ev.dataTransfer.items[i].getAsFile();
-          console.log('... file[' + i + '].name = ' + file.name);
-        }
-      }
-    } else {
-      // Use DataTransfer interface to access the file(s)
-      for (var i = 0; i < ev.dataTransfer.files.length; i++) {
-        console.log('... file[' + i + '].name = ' + ev.dataTransfer.files[i].name);
-      }
-    } 
-    
-    // Pass event to removeDragData for cleanup
-    this.removeDragData(ev);
-  }
-  
-  dragOverHandler(ev){
-    console.log('File(s) in drop zone'); 
-
-    // Prevent default behavior (Prevent file from being opened)
-    ev.preventDefault();
-  }
-
-  removeDragData(ev) {
-    console.log('Removing drag data')
-  
-    if (ev.dataTransfer.items) {
-      // Use DataTransferItemList interface to remove the drag data
-      ev.dataTransfer.items.clear();
-    } else {
-      // Use DataTransfer interface to remove the drag data
-      ev.dataTransfer.clearData();
-    }
-  }
   /**Insersion de datos en el input 
    * Datos
    */
@@ -240,7 +169,7 @@ export class ImagenComponent implements OnInit {
           let reader = new FileReader();
           reader.readAsDataURL(data);
           reader.onload = (e:any) => {
-            console.log(e);
+            //console.log(e);
             this.imgs.push({name:nombre,src:e.target.result});
           };
           
@@ -259,5 +188,51 @@ export class ImagenComponent implements OnInit {
       };
     }
     
+  }
+
+  /**Para arrastrar y soltar */
+  dropHandler(ev) {
+    console.log('File(s) dropped');
+  
+    // Prevent default behavior (Prevent file from being opened)
+    ev.preventDefault();
+  
+    if (ev.dataTransfer.items) {
+      // Use DataTransferItemList interface to access the file(s)
+      for (var i = 0; i < ev.dataTransfer.items.length; i++) {
+        // If dropped items aren't files, reject them
+        if (ev.dataTransfer.items[i].kind === 'file') {
+          var file = ev.dataTransfer.items[i].getAsFile();
+          console.log('... file[' + i + '].name = ' + file.name);
+        }
+      }
+    } else {
+      // Use DataTransfer interface to access the file(s)
+      for (var i = 0; i < ev.dataTransfer.files.length; i++) {
+        console.log('... file[' + i + '].name = ' + ev.dataTransfer.files[i].name);
+      }
+    } 
+    
+    // Pass event to removeDragData for cleanup
+    this.removeDragData(ev);
+  }
+
+  dragOverHandler(ev) {
+    console.log('File(s) in drop zone'); 
+  
+    // Prevent default behavior (Prevent file from being opened)
+    ev.preventDefault();
+  }
+
+  removeDragData(ev) {
+    console.log('Removing drag data')
+  
+    if (ev.dataTransfer.items) {
+      // Use DataTransferItemList interface to remove the drag data
+      ev.dataTransfer.items.clear();
+    } else {
+      // Use DataTransfer interface to remove the drag data
+      ev.dataTransfer.clearData();
+    }
   }
 }
